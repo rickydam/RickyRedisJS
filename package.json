@@ -1,0 +1,11 @@
+{
+  "name": "rickyredis",
+  "version": "1.0.0",
+  "description": "rickyredis",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rickydam",
+  "license": "ISC"
+}

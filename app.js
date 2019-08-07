@@ -1,9 +1,17 @@
 const http = require('http');
+const redis = require('redis');
+
+let redisClient = redis.createClient();
+redisClient.on('error', function(err) {
+    console.error('Error: ' + err);
+});
 
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World\n');
+    redisClient.ping(function(err, result) {
+        res.end(result + '\n');
+    });
 });
 
 const hostname = 'localhost';

@@ -5,6 +5,6 @@ redisClient.on('error', function(err) {
     console.error('Error: ' + err);
 });
 
-redisClient.LRANGE("work", 0, -1, function(err, result) {
-    console.log(result);
+redisClient.on('connect', function() {
+    console.log("Redis client connected.");
 });

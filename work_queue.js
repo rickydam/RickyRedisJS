@@ -15,7 +15,7 @@ class Work_Queue {
 
     pushPersistentMessages() {
         for(let i=0; i<10000; i++) {
-            redisClient.LPUSH(this.workQueueName, JSON.stringify({'event_name': i, 'payload': ""}), function(errLPUSH, resultLPUSH) {
+            redisClient.LPUSH(this.workQueueName, JSON.stringify({'event_name': i, 'payload': ""}), function(errLPUSH) {
                 if(!errLPUSH) {
                     console.log("LPUSH: " + i);
                 }

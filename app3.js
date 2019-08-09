@@ -8,7 +8,7 @@ redisClient.on('error', function(err) {
     console.error('Error: ' + err);
 });
 
-class RickyRedisPersistentQueue {
+class RickyRedisPersistentQueue3 {
     constructor(workQueueName) {
         this.workQueueName = workQueueName; // Queue: workJS
     }
@@ -61,5 +61,5 @@ class RickyRedisPersistentQueue {
     }
 }
 
-let rickyRedisPersistentQueue = new RickyRedisPersistentQueue("workJS");
-rickyRedisPersistentQueue.listen(1);
+let rickyRedisPersistentQueue3 = new RickyRedisPersistentQueue3("workJS");
+rickyRedisPersistentQueue3.listen(3);

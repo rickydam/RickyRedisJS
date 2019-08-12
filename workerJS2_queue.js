@@ -15,7 +15,7 @@ class WorkerJS2_Queue {
 
     listen(workerId) {
         console.log("Listening...");
-        let workerQueueName = "workerJS" + workerId + "-queue"; // Queue: workerJS1-queue
+        let workerQueueName = "workerJS" + workerId + "-queue"; // Queue: workerJS2-queue
         console.log(workerQueueName);
         this.queuePastEvents(workerQueueName);
         this.waitForEvents(workerQueueName);

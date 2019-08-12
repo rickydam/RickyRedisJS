@@ -41,7 +41,7 @@ class WorkerJS2_Queue {
 
     waitForEvents(workerQueueName) {
         let rrpq = this;
-        console.log("Block the connection until the workerQueue gets the task.");
+        console.log("\nBlock the connection until the workerQueue gets the task.");
         console.log("waitForEvents...");
 
         redisClient.BRPOPLPUSH(rrpq.workQueueName, workerQueueName, 0, function(errBRPOPLPUSH, resultBRPOPLPUSH) {

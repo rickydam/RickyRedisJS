@@ -32,5 +32,4 @@ class ClawStream {
 
 let clawStream = new ClawStream();
 clawStream.createGroup(1);
-clawStream.createGroup(2);
 clawStream.pushMessages(5);

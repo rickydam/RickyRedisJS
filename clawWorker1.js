@@ -63,9 +63,14 @@ class ClawWorker1 {
                 }
                 else {
                     console.log("XACK --> id:" + id + ", failed.");
-                    if(timeout == null) console.log("readGroup again\n");
-                    else console.log("blockedReadGroup again\n");
-                    clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                    if(timeout == null) {
+                        console.log("readGroup again\n");
+                        clawWorker.readGroup(groupNumber, consumer);
+                    }
+                    else {
+                        console.log("blockedReadGroup again\n");
+                        clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                    }
                 }
             }
         });
@@ -76,22 +81,39 @@ class ClawWorker1 {
             if(!errXDEL) {
                 if(xdel === 1) {
                     console.log("XDEL --> id:" + id + ", successful.");
-                    console.log("blockedReadGroup again\n");
-                    if(timeout == null) clawWorker.readGroup(groupNumber, consumer);
-                    else clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                    if(timeout == null) {
+                        console.log("readGroup again\n");
+                        clawWorker.readGroup(groupNumber, consumer);
+                    }
+                    else {
+                        console.log("blockedReadGroup again\n");
+                        clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                    }
                 }
                 else {
                     console.log("XDEL --> id:" + id + ", failed.");
                     console.log("blockedReadGroup again\n");
-                    if(timeout == null) clawWorker.readGroup(groupNumber, consumer);
-                    else clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                    if(timeout == null) {
+                        console.log("readGroup again\n");
+                        clawWorker.readGroup(groupNumber, consumer);
+                    }
+                    else {
+                        console.log("blockedReadGroup again\n");
+                        clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                    }
                 }
             }
             else {
                 console.error(errXDEL);
                 console.log("blockedReadGroup again\n");
-                if(timeout == null) clawWorker.readGroup(groupNumber, consumer);
-                else clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                if(timeout == null) {
+                    console.log("readGroup again\n");
+                    clawWorker.readGroup(groupNumber, consumer);
+                }
+                else {
+                    console.log("blockedReadGroup again\n");
+                    clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                }
             }
         });
     }

@@ -20,9 +20,9 @@ class ClawStream {
 
     pushMessages(numberOfMessages) {
         for(let i=0; i<numberOfMessages; i++) {
-            redisClient.XADD('clawStream', '*', 'index', i, function(errXADD, resultXADD) {
+            redisClient.XADD('clawStream', '*', 'item', i, function(errXADD, resultXADD) {
                 if(!errXADD) {
-                    console.log("XADD --> index:" + i + ", id:", resultXADD);
+                    console.log("XADD --> item:" + i + ", id:", resultXADD);
                 }
                 else console.error(errXADD);
             });

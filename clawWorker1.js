@@ -10,7 +10,6 @@ redisClient.on('error', function(err) {
 
 class ClawWorker1 {
     readGroup(groupNumber, consumer) {
-        let clawWorker = this;
         redisClient.XREADGROUP('GROUP', 'clawGroup' + groupNumber, consumer, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
             if(!errXREADGROUP) {
                 if(xrg != null) {
@@ -47,7 +46,6 @@ class ClawWorker1 {
     }
 
     blockedReadGroup(groupNumber, consumer, timeout) {
-        let clawWorker = this;
         redisClient.XREADGROUP('GROUP', 'clawGroup' + groupNumber, consumer, 'BLOCK', timeout, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
             if(!errXREADGROUP) {
                 if(xrg != null) {
@@ -82,7 +80,6 @@ class ClawWorker1 {
     }
 
     redisXDEL(id, groupNumber, consumer, timeout) {
-        let clawWorker = this;
         redisClient.XDEL('clawStream', id, function(errXDEL, xdel) {
             if(!errXDEL) {
                 if(xdel === 1) {

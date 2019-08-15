@@ -22,7 +22,7 @@ class ClawWorker2 {
                         console.log("XREADGROUP --> clawGroup" + groupNumber + ", " + consumer + ", id:" + id + ", data: " + key + value);
                         redisClient.XACK('clawStream', 'clawGroup1', id, function(errXACK, xack) {
                             if(!errXACK) {
-                                console.log("XACK --> id:" + id + ", " + xack);
+                                console.log("XACK --> id:" + id + ", result:" + xack);
                                 console.log("readGroup again\n");
                                 clawWorker2.readGroup(groupNumber, consumer);
                             }
@@ -53,7 +53,7 @@ class ClawWorker2 {
                         console.log("XREADGROUP --> BLOCK clawGroup" + groupNumber + ", " + consumer  + ", id:" + id + ", data: " + key + value);
                         redisClient.XACK('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
                             if(!errXACK) {
-                                console.log("XACK --> id:" + id + ", " + xack);
+                                console.log("XACK --> id:" + id + ", result:" + xack);
                                 console.log("blockedReadGroup again\n");
                                 clawWorker2.blockedReadGroup(groupNumber, consumer, timeout);
                             }

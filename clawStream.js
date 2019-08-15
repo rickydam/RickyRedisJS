@@ -14,7 +14,7 @@ class ClawStream {
             if(!errXGROUP) {
                 console.log("XGROUP --> CREATE clawGroup" + number + ", " + resultXGROUP);
             }
-            else console.log("XGROUP --> CREATE error. clawGroup" + number + " already exists.");
+            else console.log("XGROUP --> CREATE error. Stream does not exist or clawGroup" + number + " already exists.");
         });
     }
 

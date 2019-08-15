@@ -24,25 +24,7 @@ class ClawWorker1 {
                             if(!errXACK) {
                                 if(xack === 1) {
                                     console.log("XACK --> id:" + id + ", successful.");
-                                    redisClient.XDEL('clawStream', id, function(errXDEL, xdel) {
-                                        if(!errXDEL) {
-                                            if(xdel === 1) {
-                                                console.log("XDEL --> id:" + id + ", successful.");
-                                                console.log("readGroup again\n");
-                                                clawWorker1.readGroup(groupNumber, consumer);
-                                            }
-                                            else {
-                                                console.log("XDEL --> id:" + id + ", failed.");
-                                                console.log("readGroup again\n");
-                                                clawWorker1.readGroup(groupNumber, consumer);
-                                            }
-                                        }
-                                        else {
-                                            console.error(errXDEL);
-                                            console.log("readGroup again\n");
-                                            clawWorker1.readGroup(groupNumber, consumer);
-                                        }
-                                    });
+                                    clawWorker1.redisXDEL(id, groupNumber, consumer, null);
                                 }
                                 else {
                                     console.log("XACK --> id:" + id + ", failed.");
@@ -79,25 +61,7 @@ class ClawWorker1 {
                             if(!errXACK) {
                                 if(xack === 1) {
                                     console.log("XACK --> id:" + id + ", successful.");
-                                    redisClient.XDEL('clawStream', id, function(errXDEL, xdel) {
-                                        if(!errXDEL) {
-                                            if(xdel === 1) {
-                                                console.log("XDEL --> id:" + id + ", successful.");
-                                                console.log("blockedReadGroup again\n");
-                                                clawWorker1.blockedReadGroup(groupNumber, consumer, timeout);
-                                            }
-                                            else {
-                                                console.log("XDEL --> id:" + id + ", failed.");
-                                                console.log("blockedReadGroup again\n");
-                                                clawWorker1.blockedReadGroup(groupNumber, consumer, timeout);
-                                            }
-                                        }
-                                        else {
-                                            console.error(errXDEL);
-                                            console.log("blockedReadGroup again\n");
-                                            clawWorker1.blockedReadGroup(groupNumber, consumer, timeout);
-                                        }
-                                    });
+                                    clawWorker1.redisXDEL(id, groupNumber, consumer, timeout);
                                 }
                                 else {
                                     console.log("XACK --> id:" + id + ", failed.");
@@ -114,6 +78,32 @@ class ClawWorker1 {
                 }
             }
             else console.error(errXREADGROUP);
+        });
+    }
+
+    redisXDEL(id, groupNumber, consumer, timeout) {
+        let clawWorker1 = this;
+        redisClient.XDEL('clawStream', id, function(errXDEL, xdel) {
+            if(!errXDEL) {
+                if(xdel === 1) {
+                    console.log("XDEL --> id:" + id + ", successful.");
+                    console.log("blockedReadGroup again\n");
+                    if(timeout == null) clawWorker1.readGroup(groupNumber, consumer);
+                    else clawWorker1.blockedReadGroup(groupNumber, consumer, timeout);
+                }
+                else {
+                    console.log("XDEL --> id:" + id + ", failed.");
+                    console.log("blockedReadGroup again\n");
+                    if(timeout == null) clawWorker1.readGroup(groupNumber, consumer);
+                    else clawWorker1.blockedReadGroup(groupNumber, consumer, timeout);
+                }
+            }
+            else {
+                console.error(errXDEL);
+                console.log("blockedReadGroup again\n");
+                if(timeout == null) clawWorker1.readGroup(groupNumber, consumer);
+                else clawWorker1.blockedReadGroup(groupNumber, consumer, timeout);
+            }
         });
     }
 }

@@ -19,20 +19,7 @@ class ClawWorker1 {
                         let key = item[1][0];
                         let value = item[1][1];
                         console.log("XREADGROUP --> clawGroup" + groupNumber + ", " + consumer + ", id:" + id + ", data: " + key + value);
-                        redisClient.XACK('clawStream', 'clawGroup1', id, function(errXACK, xack) {
-                            if(!errXACK) {
-                                if(xack === 1) {
-                                    console.log("XACK --> id:" + id + ", successful.");
-                                    clawWorker.redisXDEL(id, groupNumber, consumer, null);
-                                }
-                                else {
-                                    console.log("XACK --> id:" + id + ", failed.");
-                                    console.log("readGroup again\n");
-                                    clawWorker.readGroup(groupNumber, consumer);
-                                }
-                            }
-                            else console.error(errXACK);
-                        });
+                        clawWorker.redisXACK(id, groupNumber, consumer, null);
                     });
                 }
                 else {
@@ -55,19 +42,7 @@ class ClawWorker1 {
                         let key = item[1][0];
                         let value = item[1][1];
                         console.log("XREADGROUP --> BLOCK clawGroup" + groupNumber + ", " + consumer  + ", id:" + id + ", data: " + key + value);
-                        redisClient.XACK('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
-                            if(!errXACK) {
-                                if(xack === 1) {
-                                    console.log("XACK --> id:" + id + ", successful.");
-                                    clawWorker.redisXDEL(id, groupNumber, consumer, timeout);
-                                }
-                                else {
-                                    console.log("XACK --> id:" + id + ", failed.");
-                                    console.log("blockedReadGroup again\n");
-                                    clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
-                                }
-                            }
-                        });
+                        clawWorker.redisXACK(id, groupNumber, consumer, timeout);
                     });
                 }
                 else {
@@ -76,6 +51,23 @@ class ClawWorker1 {
                 }
             }
             else console.error(errXREADGROUP);
+        });
+    }
+
+    redisXACK(id, groupNumber, consumer, timeout) {
+        redisClient.XACK('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
+            if(!errXACK) {
+                if(xack === 1) {
+                    console.log("XACK --> id:" + id + ", successful.");
+                    clawWorker.redisXDEL(id, groupNumber, consumer, timeout);
+                }
+                else {
+                    console.log("XACK --> id:" + id + ", failed.");
+                    if(timeout == null) console.log("readGroup again\n");
+                    else console.log("blockedReadGroup again\n");
+                    clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
+                }
+            }
         });
     }
 

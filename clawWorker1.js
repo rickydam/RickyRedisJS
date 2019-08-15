@@ -9,9 +9,9 @@ redisClient.on('error', function(err) {
 });
 
 class ClawWorker1 {
-    readGroup(number) {
+    readGroup(groupNumber) {
         let clawWorker1 = this;
-        redisClient.XREADGROUP('GROUP', 'clawGroup' + number, 'Ricky', 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
+        redisClient.XREADGROUP('GROUP', 'clawGroup' + groupNumber, 'Ricky', 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
             if(!errXREADGROUP) {
                 if(xrg != null) {
                     let dataArr = xrg[0][1];
@@ -19,30 +19,30 @@ class ClawWorker1 {
                         let id = item[0];
                         let key = item[1][0];
                         let value = item[1][1];
-                        console.log("XREADGROUP --> clawGroup" + number + ", id:" + id + ", data: " + key + value);
+                        console.log("XREADGROUP --> clawGroup" + groupNumber + ", id:" + id + ", data: " + key + value);
                         redisClient.XACK('clawStream', 'clawGroup1', id, function(errXACK, xack) {
                             if(!errXACK) {
                                 console.log("XACK --> id:" + id + ", " + xack);
                                 console.log("readGroup again\n");
-                                clawWorker1.readGroup(number);
+                                clawWorker1.readGroup(groupNumber);
                             }
                             else console.error(errXACK);
                         });
                     });
                 }
                 else {
-                    console.log("XREADGROUP --> error. clawGroup" + number + " has no data.\n");
+                    console.log("XREADGROUP --> error. clawGroup" + groupNumber + " has no data.\n");
                     console.log("Call blockedReadGroup\n");
-                    clawWorker1.blockedReadGroup(number, 5000);
+                    clawWorker1.blockedReadGroup(groupNumber, 5000);
                 }
             }
             else console.error(errXREADGROUP);
         });
     }
 
-    blockedReadGroup(number, timeout) {
+    blockedReadGroup(groupNumber, timeout) {
         let clawWorker1 = this;
-        redisClient.XREADGROUP('GROUP', 'clawGroup' + number, 'Ricky', 'BLOCK', timeout, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
+        redisClient.XREADGROUP('GROUP', 'clawGroup' + groupNumber, 'Ricky', 'BLOCK', timeout, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
             if(!errXREADGROUP) {
                 if(xrg != null) {
                     let dataArr = xrg[0][1];
@@ -50,18 +50,18 @@ class ClawWorker1 {
                         let id = item[0];
                         let key = item[1][0];
                         let value = item[1][1];
-                        console.log("XREADGROUP --> BLOCK clawGroup" + number + ", id:" + id + ", data: " + key + value);
-                        redisClient.XACK('clawStream', 'clawGroup1', id, function(errXACK, xack) {
+                        console.log("XREADGROUP --> BLOCK clawGroup" + groupNumber + ", id:" + id + ", data: " + key + value);
+                        redisClient.XACK('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
                             if(!errXACK) {
                                 console.log("XACK --> id:" + id + ", " + xack);
                                 console.log("blockedReadGroup again\n");
-                                clawWorker1.blockedReadGroup(number, timeout);
+                                clawWorker1.blockedReadGroup(groupNumber, timeout);
                             }
                         });
                     });
                 }
                 else {
-                    console.log("XREADGROUP --> BLOCK error. clawGroup" + number + " received no data for " + timeout + "ms.");
+                    console.log("XREADGROUP --> BLOCK error. clawGroup" + groupNumber + " received no data for " + timeout + "ms.");
                     process.exit();
                 }
             }

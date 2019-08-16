@@ -9,12 +9,12 @@ redisClient.on('error', function(err) {
 });
 
 class ClawStream {
-    createGroup(number) {
-        redisClient.XGROUP('CREATE', 'clawStream', 'clawGroup' + number, '0', function(errXGROUP, resultXGROUP) {
+    createGroup(groupNumber) {
+        redisClient.XGROUP('CREATE', 'clawStream', 'clawGroup' + groupNumber, '0', function(errXGROUP, resultXGROUP) {
             if(!errXGROUP) {
-                console.log("XGROUP --> CREATE clawGroup" + number + ", " + resultXGROUP);
+                console.log("XGROUP --> CREATE clawGroup" + groupNumber + ", " + resultXGROUP);
             }
-            else console.log("XGROUP --> CREATE error. Stream does not exist or clawGroup" + number + " already exists.");
+            else console.log("XGROUP --> CREATE error. Stream does not exist or clawGroup" + groupNumber + " already exists.");
         });
     }
 

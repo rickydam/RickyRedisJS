@@ -79,41 +79,17 @@ class ClawWorker1 {
     redisXDEL(id, groupNumber, consumer, timeout) {
         redisClient.XDEL('clawStream', id, function(errXDEL, xdel) {
             if(!errXDEL) {
-                if(xdel === 1) {
-                    console.log("XDEL --> id:" + id + ", successful.");
-                    if(timeout == null) {
-                        console.log("readGroup again\n");
-                        clawWorker.readGroup(groupNumber, consumer);
-                    }
-                    else {
-                        console.log("blockedReadGroup again\n");
-                        clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
-                    }
-                }
-                else {
-                    console.log("XDEL --> id:" + id + ", failed.");
-                    console.log("blockedReadGroup again\n");
-                    if(timeout == null) {
-                        console.log("readGroup again\n");
-                        clawWorker.readGroup(groupNumber, consumer);
-                    }
-                    else {
-                        console.log("blockedReadGroup again\n");
-                        clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
-                    }
-                }
+                if(xdel === 1) console.log("XDEL --> id:" + id + ", successful.");
+                else console.log("XDEL --> id:" + id + ", failed.");
+            }
+            else console.error(errXDEL);
+            if(timeout == null) {
+                console.log("readGroup again\n");
+                clawWorker.readGroup(groupNumber, consumer);
             }
             else {
-                console.error(errXDEL);
                 console.log("blockedReadGroup again\n");
-                if(timeout == null) {
-                    console.log("readGroup again\n");
-                    clawWorker.readGroup(groupNumber, consumer);
-                }
-                else {
-                    console.log("blockedReadGroup again\n");
-                    clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
-                }
+                clawWorker.blockedReadGroup(groupNumber, consumer, timeout);
             }
         });
     }

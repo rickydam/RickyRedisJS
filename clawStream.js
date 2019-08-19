@@ -32,4 +32,4 @@ class ClawStream {
 
 let clawStream = new ClawStream();
 clawStream.createGroup(1);
-clawStream.pushMessages(5);
+clawStream.pushMessages(100);

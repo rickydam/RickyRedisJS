@@ -20,7 +20,7 @@ class ClawPendingWorker {
                         if(idleTime > 20000) {
                             redis.xclaim('clawStream', 'clawGroup' + groupNumber, 'Billy', 20000, id, function(errXCLAIM, xclaim) {
                                 if(!errXCLAIM) {
-                                    console.log("XCLAIM --> id: " + id + ", result: " + xclaim);
+                                    console.log("XCLAIM --> id: " + id + ", result: " + xclaim[0][1][0] + xclaim[0][1][1]);
                                 }
                                 else console.error(errXCLAIM);
                             });

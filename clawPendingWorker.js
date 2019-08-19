@@ -1,16 +1,9 @@
-const redis = require('redis');
-
-let redisClient = redis.createClient();
-redisClient.on('connect', function() {
-    console.log("Redis client connected.\n");
-});
-redisClient.on('error', function(err) {
-    console.error("Error: " + err);
-});
+const Redis = require('ioredis');
+let redis = new Redis();
 
 class ClawPendingWorker {
     checkGroupPendingList(groupNumber) {
-        redisClient.XPENDING('clawStream', 'clawGroup' + groupNumber, '-', '+', 100, function(errXPENDING, xpending) {
+        redis.xpending('clawStream', 'clawGroup' + groupNumber, '-', '+', 100, function(errXPENDING, xpending) {
             if(!errXPENDING) {
                 if(xpending != null) {
                     xpending.forEach(function(item) {
@@ -25,7 +18,7 @@ class ClawPendingWorker {
                         let retryCountStr = ", retryCount: " + retryCount;
                         console.log(xpendingStr + idStr + consumerStr + idleTimeStr + retryCountStr);
                         if(idleTime > 20000) {
-                            redisClient.XCLAIM('clawStream', 'clawGroup' + groupNumber, 'Billy', 20000, id, function(errXCLAIM, xclaim) {
+                            redis.xclaim('clawStream', 'clawGroup' + groupNumber, 'Billy', 20000, id, function(errXCLAIM, xclaim) {
                                 if(!errXCLAIM) {
                                     console.log("XCLAIM --> id: " + id + ", result: " + xclaim);
                                 }

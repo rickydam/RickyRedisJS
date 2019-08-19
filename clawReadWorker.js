@@ -1,16 +1,9 @@
-const redis = require('redis');
-
-let redisClient = redis.createClient();
-redisClient.on('connect', function() {
-    console.log("Redis client connected.\n");
-});
-redisClient.on('error', function(err) {
-    console.error('Error: ' + err);
-});
+const Redis = require('ioredis');
+let redis = new Redis();
 
 class ClawReadWorker {
     readGroup(groupNumber, consumer) {
-        redisClient.XREADGROUP('GROUP', 'clawGroup' + groupNumber, consumer, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
+        redis.xreadgroup('GROUP', 'clawGroup' + groupNumber, consumer, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
             if(!errXREADGROUP) {
                 if(xrg != null) {
                     let dataArr = xrg[0][1];
@@ -33,7 +26,7 @@ class ClawReadWorker {
     }
 
     blockedReadGroup(groupNumber, consumer, timeout) {
-        redisClient.XREADGROUP('GROUP', 'clawGroup' + groupNumber, consumer, 'BLOCK', timeout, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
+        redis.xreadgroup('GROUP', 'clawGroup' + groupNumber, consumer, 'BLOCK', timeout, 'COUNT', 1, 'STREAMS', 'clawStream', '>', function(errXREADGROUP, xrg) {
             if(!errXREADGROUP) {
                 if(xrg != null) {
                     let dataArr = xrg[0][1];
@@ -55,7 +48,7 @@ class ClawReadWorker {
     }
 
     redisXACK(id, groupNumber, consumer, timeout) {
-        redisClient.XACK('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
+        redis.xack('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
             if(!errXACK) {
                 if(xack === 1) {
                     console.log("XACK --> id:" + id + ", successful.");
@@ -77,7 +70,7 @@ class ClawReadWorker {
     }
 
     redisXDEL(id, groupNumber, consumer, timeout) {
-        redisClient.XDEL('clawStream', id, function(errXDEL, xdel) {
+        redis.xdel('clawStream', id, function(errXDEL, xdel) {
             if(!errXDEL) {
                 if(xdel === 1) console.log("XDEL --> id:" + id + ", successful.");
                 else console.log("XDEL --> id:" + id + ", failed.");

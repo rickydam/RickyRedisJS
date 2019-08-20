@@ -42,7 +42,7 @@ class ClawPendingWorker {
                     if(xclaim.length > 0) {
                         let key = xclaim[0][1][0];
                         let value = xclaim[0][1][1];
-                        console.log("XCLAIM --> id: " + id + ", result: " + key + value);
+                        console.log("XCLAIM --> new consumer: " + consumer + ", id: " + id + ", result: " + key + value);
                         clawPendingWorker.redisXACK(id);
                     }
                 }

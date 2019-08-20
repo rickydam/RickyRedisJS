@@ -55,10 +55,10 @@ class ClawPendingWorker {
         redis.xack('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
             if(!errXACK) {
                 if(xack === 1) {
-                    console.log("XACK --> id: " + id + ", successful.");
+                    console.log("XACK --> consumer: " + consumer + ", id: " + id + ", successful.");
                     clawPendingWorker.redisXDEL(id);
                 }
-                else console.log("XACK --> id: " + id + ", failed.");
+                else console.log("XACK --> consumer: " + consumer + ", id: " + id + ", failed.");
             }
             else console.error(errXACK);
         });
@@ -67,8 +67,8 @@ class ClawPendingWorker {
     redisXDEL(id) {
         redis.xdel('clawStream', id, function(errXDEL, xdel) {
             if(!errXDEL) {
-                if(xdel === 1) console.log("XDEL --> id: " + id + ", successful.");
-                else console.log("XDEL --> id: " + id + ", failed.");
+                if(xdel === 1) console.log("XDEL --> consumer: " + consumer + ", id: " + id + ", successful.");
+                else console.log("XDEL --> consumer: " + consumer + ", id: " + id + ", failed.");
             }
             else console.error(errXDEL);
         });

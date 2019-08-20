@@ -51,11 +51,11 @@ class ClawReadWorker {
         redis.xack('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
             if(!errXACK) {
                 if(xack === 1) {
-                    console.log("XACK --> id:" + id + ", successful.");
+                    console.log("XACK --> consumer: " + consumer + ", id: " + id + ", successful.");
                     clawReadWorker.redisXDEL(id, groupNumber, consumer, timeout);
                 }
                 else {
-                    console.log("XACK --> id:" + id + ", failed.");
+                    console.log("XACK --> consumer: " + consumer + ", id: " + id + ", failed.");
                     if(timeout == null) {
                         console.log("readGroup again\n");
                         clawReadWorker.readGroup(groupNumber, consumer);
@@ -72,8 +72,8 @@ class ClawReadWorker {
     redisXDEL(id, groupNumber, consumer, timeout) {
         redis.xdel('clawStream', id, function(errXDEL, xdel) {
             if(!errXDEL) {
-                if(xdel === 1) console.log("XDEL --> id:" + id + ", successful.");
-                else console.log("XDEL --> id:" + id + ", failed.");
+                if(xdel === 1) console.log("XDEL --> consumer: " + consumer + ", id: " + id + ", successful.");
+                else console.log("XDEL --> consumer: " + consumer + ", id: " + id + ", failed.");
             }
             else console.error(errXDEL);
             if(timeout == null) {

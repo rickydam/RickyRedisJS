@@ -89,4 +89,7 @@ class ClawReadWorker {
 }
 
 let clawReadWorker = new ClawReadWorker();
-clawReadWorker.readGroup(1, 'Ricky');
+
+let groupNumber = 1;
+let consumer = 'Richard';
+clawReadWorker.readGroup(groupNumber, consumer);

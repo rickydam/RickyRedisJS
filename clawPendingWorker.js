@@ -38,9 +38,13 @@ class ClawPendingWorker {
     redisXCLAIM(id) {
         redis.xclaim('clawStream', 'clawGroup' + groupNumber, consumer, minIdleTime, id, function(errXCLAIM, xclaim) {
             if(!errXCLAIM) {
-                let key = xclaim[0][1][0];
-                let value = xclaim[0][1][1];
-                console.log("XCLAIM --> id: " + id + ", result: " + key + value);
+                if(xclaim != null) {
+                    if(xclaim.length > 0) {
+                        let key = xclaim[0][1][0];
+                        let value = xclaim[0][1][1];
+                        console.log("XCLAIM --> id: " + id + ", result: " + key + value);
+                    }
+                }
             }
             else console.error(errXCLAIM);
         });

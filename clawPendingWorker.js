@@ -43,10 +43,34 @@ class ClawPendingWorker {
                         let key = xclaim[0][1][0];
                         let value = xclaim[0][1][1];
                         console.log("XCLAIM --> id: " + id + ", result: " + key + value);
+                        clawPendingWorker.redisXACK(id);
                     }
                 }
             }
             else console.error(errXCLAIM);
+        });
+    }
+
+    redisXACK(id) {
+        redis.xack('clawStream', 'clawGroup' + groupNumber, id, function(errXACK, xack) {
+            if(!errXACK) {
+                if(xack === 1) {
+                    console.log("XACK --> id: " + id + ", successful.");
+                    clawPendingWorker.redisXDEL(id);
+                }
+                else console.log("XACK --> id: " + id + ", failed.");
+            }
+            else console.error(errXACK);
+        });
+    }
+
+    redisXDEL(id) {
+        redis.xdel('clawStream', id, function(errXDEL, xdel) {
+            if(!errXDEL) {
+                if(xdel === 1) console.log("XDEL --> id: " + id + ", successful.");
+                else console.log("XDEL --> id: " + id + ", failed.");
+            }
+            else console.error(errXDEL);
         });
     }
 }

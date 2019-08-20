@@ -55,6 +55,6 @@ let clawPendingWorker = new ClawPendingWorker();
 
 let groupNumber = 1;
 let interval = 5000;
-let consumer = 'Jack';
+let consumer = 'Dinesh';
 let minIdleTime = 20000;
 clawPendingWorker.checkGroupPendingList();

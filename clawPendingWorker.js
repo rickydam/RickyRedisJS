@@ -2,38 +2,55 @@ const Redis = require('ioredis');
 let redis = new Redis();
 
 class ClawPendingWorker {
-    checkGroupPendingList(groupNumber) {
+    checkGroupPendingList() {
+        setInterval(function() {
+            clawPendingWorker.redisXPENDING();
+        }, interval);
+    }
+
+    redisXPENDING() {
         redis.xpending('clawStream', 'clawGroup' + groupNumber, '-', '+', 100, function(errXPENDING, xpending) {
             if(!errXPENDING) {
                 if(xpending != null) {
-                    xpending.forEach(function(item) {
-                        let xpendingStr = "XPENDING --> ";
-                        let id = item[0];
-                        let idStr = "id: " + id;
-                        let consumer = item[1];
-                        let consumerStr = ", consumer: " + consumer;
-                        let idleTime = item[2];
-                        let idleTimeStr = ", idleTime: " + idleTime;
-                        let retryCount = item[3];
-                        let retryCountStr = ", retryCount: " + retryCount;
-                        console.log(xpendingStr + idStr + consumerStr + idleTimeStr + retryCountStr);
-                        if(idleTime > 20000) {
-                            redis.xclaim('clawStream', 'clawGroup' + groupNumber, 'Billy', 20000, id, function(errXCLAIM, xclaim) {
-                                if(!errXCLAIM) {
-                                    console.log("XCLAIM --> id: " + id + ", result: " + xclaim[0][1][0] + xclaim[0][1][1]);
-                                }
-                                else console.error(errXCLAIM);
-                            });
-                        }
-                    });
+                    if(xpending.length > 0) {
+                        xpending.forEach(function(item) {
+                            let xpendingStr = "XPENDING --> ";
+                            let id = item[0];
+                            let idStr = "id: " + id;
+                            let consumer = item[1];
+                            let consumerStr = ", consumer: " + consumer;
+                            let idleTime = item[2];
+                            let idleTimeStr = ", idleTime: " + idleTime;
+                            let retryCount = item[3];
+                            let retryCountStr = ", retryCount: " + retryCount;
+                            console.log(xpendingStr + idStr + consumerStr + idleTimeStr + retryCountStr);
+                            clawPendingWorker.redisXCLAIM(id);
+                        });
+                    }
+                    else console.log("XPENDING --> No data at the moment");
                 }
-                else console.log("XPENDING --> error. ")
+                else console.log("XPENDING --> error.");
             }
             else console.error(errXPENDING);
         });
-        // this.checkGroupPendingList(groupNumber);
+    }
+
+    redisXCLAIM(id) {
+        redis.xclaim('clawStream', 'clawGroup' + groupNumber, consumer, minIdleTime, id, function(errXCLAIM, xclaim) {
+            if(!errXCLAIM) {
+                let key = xclaim[0][1][0];
+                let value = xclaim[0][1][1];
+                console.log("XCLAIM --> id: " + id + ", result: " + key + value);
+            }
+            else console.error(errXCLAIM);
+        });
     }
 }
 
 let clawPendingWorker = new ClawPendingWorker();
-clawPendingWorker.checkGroupPendingList(1);
+
+let groupNumber = 1;
+let interval = 5000;
+let consumer = 'Jack';
+let minIdleTime = 20000;
+clawPendingWorker.checkGroupPendingList();

@@ -9,7 +9,7 @@ class ClawPendingWorker {
     }
 
     redisXPENDING() {
-        redis.xpending('clawStream', 'clawGroup' + groupNumber, '-', '+', 100, function(errXPENDING, xpending) {
+        redis.xpending('clawStream', 'clawGroup' + groupNumber, '-', '+', 1000000, function(errXPENDING, xpending) {
             if(!errXPENDING) {
                 if(xpending != null) {
                     if(xpending.length > 0) {

@@ -18,7 +18,7 @@ class ClawReadWorker {
                 else {
                     console.log("XREADGROUP --> error. clawGroup" + groupNumber + " has no data.\n");
                     console.log("Call blockedReadGroup\n");
-                    clawReadWorker.blockedReadGroup(groupNumber, consumer, 5000);
+                    clawReadWorker.blockedReadGroup(groupNumber, consumer, 10000);
                 }
             }
             else console.error(errXREADGROUP);

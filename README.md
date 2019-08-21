@@ -2,7 +2,7 @@
 
 * node clawStream.js
     * tries to create group1 (XGROUP)
-    * pushes 100 messages (XADD)
+    * pushes 5 messages (XADD)
 
 * node clawReadWorker.js
     * go over past messages (XREADGROUP)

@@ -1,5 +1,10 @@
 ### Performance Tests
 
+Device used: <br>
+MacBook Pro 13-inch, Mid-2017 (Model: A1708 EMC 3164) <br>
+CPU: Intel i5-7360U, 2.3 GHz, dual-core, 64-bit <br>
+RAM: 16GB LPDDR3 2133 MHz <br>
+
 | Performance Test | Results (console.time) |
 | ---------------- | ---------------------- |
 | 10,000 messages <br> Each message has a JSON object with 1024 key-value pairs <br> (Example) item37: 0.9606370861792557 | pushMessages took 1884.030 ms <br> clawReadWorker took 3681.307 ms

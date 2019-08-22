@@ -11,18 +11,27 @@ class ClawStream {
         });
     }
 
-    pushMessages(numberOfMessages) {
+    pushMessages(numberOfMessages, sizeOfMessage) {
         for(let i=0; i<numberOfMessages; i++) {
-            redis.xadd('clawStream', '*', 'item', i, function(errXADD, resultXADD) {
+            let obj = this.createJSON(sizeOfMessage);
+            redis.xadd('clawStream', '*', 'obj', obj, function(errXADD, resultXADD) {
                 if(!errXADD) {
-                    console.log("XADD --> item:" + i + ", id:", resultXADD);
+                    console.log("XADD --> " + i + ", id:", resultXADD);
                 }
                 else console.error(errXADD);
             });
+        }
+    }
+
+    createJSON(sizeOfMessage) {
+        let obj = {};
+        for(let i=0; i<sizeOfMessage; i++) {
+            let str = "item" + i;
+            obj[str] = Math.random();
         }
     }
 }
 
 let clawStream = new ClawStream();
 clawStream.createGroup(1);
-clawStream.pushMessages(5);
+clawStream.pushMessages(10000, 1024);

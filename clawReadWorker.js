@@ -40,6 +40,7 @@ class ClawReadWorker {
                 }
                 else {
                     console.log("XREADGROUP --> BLOCK error. clawGroup" + groupNumber + " received no data for " + timeout + "ms.");
+                    console.timeEnd("clawReadWorker");
                     process.exit();
                 }
             }
@@ -93,4 +94,6 @@ let clawReadWorker = new ClawReadWorker();
 
 let groupNumber = 1;
 let consumer = 'Richard';
+
+console.time("clawReadWorker");
 clawReadWorker.readGroup(groupNumber, consumer);

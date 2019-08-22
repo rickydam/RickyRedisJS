@@ -19,6 +19,8 @@ RAM: 16GB LPDDR3 2133 MHz <br>
 - Increasing the number of messages: <br>
     - for-loop calling XADD has to run more iterations, takes more time
 
+<hr>
+
 ### What each JavaScript file does
 
 * node clawStream.js

@@ -12,6 +12,12 @@ RAM: 16GB LPDDR3 2133 MHz <br>
 | 100,000 messages <br> Each message has a JSON object with 1024 key-value pairs <br> (Example) item54: 0.617136188264803 | pushMessages took 17868.518 ms <br> clawReadWorker took 31050.228 ms
 | 100,000 messages <br> Each message has a JSON object with 5000 key-value pairs <br> (Example) item43: 0.8826173661160888 | pushMessages took 82835.053 ms <br> clawReadWorker took 31294.632 ms
 
+**Observations**: <br>
+- Increasing the number of key-value pairs in the JSON object: <br>
+    - for-loop creating dynamic JSON has to run more iterations, takes more time
+    - XREADGROUP is unaffected by more key-value pairs
+- Increasing the number of messages: <br>
+    - for-loop calling XADD has to run more iterations, takes more time
 
 ### What each JavaScript file does
 

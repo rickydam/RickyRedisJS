@@ -17,7 +17,6 @@ RAM: 16GB LPDDR3 2133 MHz <br>
 
 **Observations**: <br>
 - Increasing the number of key-value pairs in the JSON object: <br>
-    - for-loop creating dynamic JSON has to run more iterations, takes more time
     - XREADGROUP is unaffected by more key-value pairs
 - Increasing the number of messages: <br>
     - for-loop calling XADD has to run more iterations, takes more time

@@ -7,10 +7,10 @@ RAM: 16GB LPDDR3 2133 MHz <br>
 
 | Performance Test | Results (console.time) |
 | ---------------- | ---------------------- |
-| 10,000 messages <br> Each message has a JSON object with 1024 key-value pairs <br> (Example) item37: 0.9606370861792557 | pushMessages took 44.774 ms <br> clawReadWorker took 1548.446 ms
-| 10,000 messages <br> Each message has a JSON object with 5000 key-value pairs <br> (Example) item21: 0.3198580045674586 | pushMessages took 44.850 ms <br> clawReadWorker took 1525.098 ms
-| 100,000 messages <br> Each message has a JSON object with 1024 key-value pairs <br> (Example) item54: 0.617136188264803 | pushMessages took 243.412 ms <br> clawReadWorker took 13508.106 ms
-| 1,000,000 messages <br> Each message has a JSON object with 1024 key-value pairs <br> (Example) item43: 0.8826173661160888 | pushMessages took 2538.734 ms <br> clawReadWorker took 139228.538 ms
+| 10,000 messages <br> Each message has a JSON object with 1024 key-value pairs | pushMessages took 44.774 ms <br> clawReadWorker took 1548.446 ms
+| 10,000 messages <br> Each message has a JSON object with 5000 key-value pairs | pushMessages took 44.850 ms <br> clawReadWorker took 1525.098 ms
+| 100,000 messages <br> Each message has a JSON object with 1024 key-value pairs | pushMessages took 243.412 ms <br> clawReadWorker took 13508.106 ms
+| 1,000,000 messages <br> Each message has a JSON object with 1024 key-value pairs | pushMessages took 2538.734 ms <br> clawReadWorker took 139228.538 ms
 
 **Observations**: <br>
 - Increasing the number of key-value pairs in the JSON object: <br>

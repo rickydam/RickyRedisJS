@@ -7,10 +7,13 @@ RAM: 16GB LPDDR3 2133 MHz <br>
 
 | Performance Test | Results (console.time) |
 | ---------------- | ---------------------- |
-| 10,000 messages <br> Each message has a JSON object with 1024 key-value pairs | pushMessages took 44.774 ms <br> clawReadWorker took 1548.446 ms
-| 10,000 messages <br> Each message has a JSON object with 5000 key-value pairs | pushMessages took 44.850 ms <br> clawReadWorker took 1525.098 ms
-| 100,000 messages <br> Each message has a JSON object with 1024 key-value pairs | pushMessages took 243.412 ms <br> clawReadWorker took 13508.106 ms
-| 1,000,000 messages <br> Each message has a JSON object with 1024 key-value pairs | pushMessages took 2538.734 ms <br> clawReadWorker took 139228.538 ms
+| 10,000 messages <br> JSON with 1024 key-value pairs | pushMessages took 52.926 ms <br> clawReadWorker took 1568.747 ms
+| 10,000 messages <br> JSON with 5000 key-value pairs | pushMessages took 50.360 ms <br> clawReadWorker took 1710.200 ms
+| 100,000 messages <br> JSON with 1024 key-value pairs | pushMessages took 259.420 ms <br> clawReadWorker took 14370.777 ms
+| 1,000,000 messages <br> JSON with 1024 key-value pairs | pushMessages took 2635.301 ms <br> clawReadWorker took 141862.422 ms
+| 10,000 messages <br> JSON with 32,000 key-value pairs (Approx 1 MB) | pushMessages took 47.577 ms <br> clawReadWorker took 1543.636 ms
+| 10,000 messages <br> JSON with 320,000 key-value pairs (Approx 10 MB) | pushMessages took 46.354 ms <br> clawReadWorker took 1575.736 ms
+| 10,000 messages <br> JSON with 3,200,000 key-value pairs (Approx 100 MB) | pushMessages took 96.944 ms <br> clawReadWorker took 1538.306 ms
 
 **Observations**: <br>
 - Increasing the number of key-value pairs in the JSON object: <br>

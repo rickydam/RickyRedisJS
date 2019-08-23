@@ -11,22 +11,24 @@ class ClawStream {
     }
 
     pushMessages(numberOfMessages, sizeOfMessage) {
-        let obj = this.createJSON(sizeOfMessage);
-        console.time("XADD");
-        for(let i=0; i<numberOfMessages; i++) {
-            redis.xadd('clawStream', '*', 'obj', obj, function(errXADD, resultXADD) {
-                if(errXADD) console.error(errXADD);
-            });
-        }
-        console.timeEnd("XADD");
+        this.createJSON(sizeOfMessage, function(obj) {
+            console.time("XADD");
+            for(let i=0; i<numberOfMessages; i++) {
+                redis.xadd('clawStream', '*', 'obj', obj, function(errXADD, resultXADD) {
+                    if(errXADD) console.error(errXADD);
+                });
+            }
+            console.timeEnd("XADD");
+        });
     }
 
-    createJSON(sizeOfMessage) {
+    createJSON(sizeOfMessage, callback) {
         let obj = {};
         for(let i=0; i<sizeOfMessage; i++) {
             let str = "item" + i;
             obj[str] = Math.random();
         }
+        callback(obj);
     }
 }
 

@@ -53,7 +53,7 @@ class ClawReadWorker {
                 }
             }
         });
-        pipeline.xdel('clawStream', id, function(errXDEL, xdel) {
+        pipeline.xdel('clawStream', id, function(errXDEL) {
             if(errXDEL) console.error(errXDEL);
             if(timeout == null) {
                 clawReadWorker.readGroup(groupNumber, consumer);

@@ -5,10 +5,7 @@ class ClawStream {
     createGroup(groupNumber) {
         console.time("createGroup");
         redis.xgroup('CREATE', 'clawStream', 'clawGroup' + groupNumber, '0', function(errXGROUP, resultXGROUP) {
-            if(!errXGROUP) {
-                console.log("XGROUP --> CREATE clawGroup" + groupNumber + ", " + resultXGROUP);
-            }
-            else console.log("XGROUP --> CREATE error. Stream does not exist or clawGroup" + groupNumber + " already exists.");
+            if(errXGROUP) console.log("XGROUP --> CREATE error. Stream does not exist or clawGroup" + groupNumber + " already exists.");
         });
         console.timeEnd("createGroup");
     }
@@ -18,10 +15,7 @@ class ClawStream {
         console.time("pushMessages");
         for(let i=0; i<numberOfMessages; i++) {
             redis.xadd('clawStream', '*', 'obj', obj, function(errXADD, resultXADD) {
-                if(!errXADD) {
-                    console.log("XADD --> " + i + ", id:", resultXADD);
-                }
-                else console.error(errXADD);
+                if(errXADD) console.error(errXADD);
             });
         }
         console.timeEnd("pushMessages");
@@ -38,4 +32,4 @@ class ClawStream {
 
 let clawStream = new ClawStream();
 clawStream.createGroup(1);
-clawStream.pushMessages(10000, 1024);
+clawStream.pushMessages(100000, 1024);

@@ -12,13 +12,13 @@ class ClawStream {
 
     pushMessages(numberOfMessages, sizeOfMessage) {
         let obj = this.createJSON(sizeOfMessage);
-        console.time("pushMessages");
+        console.time("XADD");
         for(let i=0; i<numberOfMessages; i++) {
             redis.xadd('clawStream', '*', 'obj', obj, function(errXADD, resultXADD) {
                 if(errXADD) console.error(errXADD);
             });
         }
-        console.timeEnd("pushMessages");
+        console.timeEnd("XADD");
     }
 
     createJSON(sizeOfMessage) {
